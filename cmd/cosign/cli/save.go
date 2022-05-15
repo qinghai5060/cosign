@@ -51,13 +51,18 @@ func SaveCmd(ctx context.Context, opts options.SaveOptions, imageRef string) err
 		return errors.Wrapf(err, "parsing image name %s", imageRef)
 	}
 
-	se, err := ociremote.SignedEntity(ref)
+	regOpts, err := opts.Registry.ClientOpts(ctx)
+	if err != nil {
+		return errors.Wrap(err, "constructing client options")
+	}
+
+	se, err := ociremote.SignedEntity(ref, regOpts...)
 	if err != nil {
 		return errors.Wrap(err, "signed entity")
 	}
 
 	if _, ok := se.(oci.SignedImage); ok {
-		si, err := ociremote.SignedImage(ref)
+		si, err := ociremote.SignedImage(ref, regOpts...)
 		if err != nil {
 			return errors.Wrap(err, "getting signed image")
 		}
@@ -65,7 +70,7 @@ func SaveCmd(ctx context.Context, opts options.SaveOptions, imageRef string) err
 	}
 
 	if _, ok := se.(oci.SignedImageIndex); ok {
-		sii, err := ociremote.SignedImageIndex(ref)
+		sii, err := ociremote.SignedImageIndex(ref, regOpts...)
 		if err != nil {
 			return errors.Wrap(err, "getting signed image index")
 		}
