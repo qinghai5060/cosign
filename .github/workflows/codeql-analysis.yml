@@ -42,7 +42,7 @@ jobs:
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v2.4.0
 
     - name: Utilize Go Module Cache
-      uses: actions/cache@48af2dc4a9e8278b89d7fa154b955c30c6aaab09 # v3.0.2
+      uses: actions/cache@56461b9eb0f8438fd15c7a9968e3c9ebb18ceff1 # v3.0.2
       with:
         path: |
           ~/go/pkg/mod
